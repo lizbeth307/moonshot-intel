@@ -12,7 +12,7 @@ For a developer wanting **full Kimi K3 + Swarm + Claw** vs **inference-only** vs
 | **Kimi Code CLI** | Full OAuth stack | Partial (Platform key via `/login`) | No |
 | **OpenClaw Claw** | Yes (Coding key + membership) | Platform path only (K3, no Claw billing stack) | No |
 | **ACP / Zed** | Yes (`kimi acp`) | No | Cursor-native |
-| **Billing** | Subscription + quota + fuel pack | Prepaid balance | Cursor subscription |
+| **Billing** | Subscription + quota + fuel pack | Prepaid balance (tiered RPM/TPM) | Cursor subscription |
 | **Auth** | OAuth / Coding Plan key | Platform API key | Cursor account |
 
 ## When to choose Vivace
@@ -25,6 +25,8 @@ For a developer wanting **full Kimi K3 + Swarm + Claw** vs **inference-only** vs
 
 - You need **K3 API only** (scripts, OpenClaw with `@openclaw/moonshot-provider`, Codex/Claude Code guides)
 - Pay-as-you-go fits sporadic usage (~$0.30–$15 / 1M tokens per [`pricing-chat-k3.md`](../platform-docs/pricing-chat-k3.md))
+- **K2.7 Code** available on Platform without Vivace (`kimi-k2.7-code`, highspeed variant)
+- Minimum $1 recharge; rate limits scale with cumulative spend (Tier0: 3 RPM → Tier5: 10K RPM)
 - Setup: `platform.kimi.ai` key → `kimi /login` → Kimi Platform **or** direct `api.moonshot.ai/v1`
 
 ## When Cursor Ultra still makes sense

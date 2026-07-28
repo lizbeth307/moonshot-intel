@@ -8,7 +8,8 @@
       "www.kimi.com": "2606:4700::6812:14f6",
       "cdn.kimi.com": "98.96.229.19",
       "chat.msh.team": "103.143.17.156",
-      "api.msh.team": "172.24.64.47"
+      "api.msh.team": "172.24.64.47",
+      "api-sg.moonshot.ai": "2606:4700::6812:14f6"
     },
     "nxdomain": [
       "agent.kimi.com",

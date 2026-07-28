@@ -153,12 +153,45 @@ See [`infra-dns.json`](infra-dns.json) and [`msh-team-notes.md`](msh-team-notes.
 ## Legal Access Paths
 
 1. **Vivace / Kimi Membership** → OAuth as today → full Code + K3 1M + Swarm + Claw
-2. **Platform API key** → K3 inference pay-as-you-go via CLI or OpenClaw
+2. **Platform API key** → K3 / K2.7 Code inference pay-as-you-go via CLI or OpenClaw
 3. **Consumer kimi.com** → browser chat (separate from Code CLI stack)
+4. **Device OAuth** → headless login via `kimi.com/code/authorize_device` (see below)
+
+## Device OAuth (headless / CI)
+
+Official device-code grant on `auth.kimi.com`:
+
+```
+POST /api/oauth/device_authorization
+  client_id=17e5f671-d194-4dfb-9706-5516cb48c098&scope=kimi-code
+→ user_code + verification_uri=https://www.kimi.com/code/authorize_device
+
+POST /api/oauth/token (grant_type=device_code) — poll every 5s, TTL 1800s
+```
+
+Requests include `X-Msh-Platform: kimi_code_cli`, `X-Msh-Device-Id` (stable UUID in `~/.kimi-code/device_id`), and other device headers. JWT `device_id` claim binds to this id.
+
+## Dual protocol on Code `/models`
+
+Server may declare per-model `protocol`:
+
+| Protocol | Client routing |
+|----------|----------------|
+| `kimi` (default) | OpenAI-compatible chat on Code gateway |
+| `anthropic` | Messages API at `/v1/messages?beta=true` on same gateway |
+
+Both paths hit the same membership gate (402). OpenClaw `@openclaw/kimi-provider` uses anthropic-messages on `api.kimi.com/coding/`.
+
+Model metadata also includes `think_efforts` and `supports_thinking_type` (`only` / `no` / `both`).
+
+## Platform API (separate inventory)
+
+Platform-only surfaces not exposed on Code API: batches, files, token estimate, balance. Regional mirror: `api-sg.moonshot.ai`. Full path list: [`platform-api-inventory.json`](platform-api-inventory.json).
 
 ## References
 
 - Master index: [`../error-matrix.json`](../error-matrix.json)
+- New findings: [`findings-deepening-b.md`](findings-deepening-b.md)
 - Billing / Claw: [`billing-claw.md`](billing-claw.md)
 - Protobuf: [`protobuf.md`](protobuf.md)
 - Decision guide: [`decision-matrix.md`](decision-matrix.md)

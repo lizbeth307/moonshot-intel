@@ -119,11 +119,25 @@
   "rest_mentions": [
     "/chat/completions",
     "/feedback",
+    "/feedback/upload_url",
+    "/feedback/upload_complete",
     "/fetch",
     "/models",
     "/search",
     "/swarm"
   ],
+  "code_api_endpoints_from_source": [
+    "GET /usages",
+    "POST /feedback",
+    "POST /feedback/upload_url",
+    "POST /feedback/upload_complete",
+    "GET /models"
+  ],
+  "goal_mode": {
+    "ga": true,
+    "kimi_p_exit_codes": { "complete": 0, "blocked": 3, "paused": 6 },
+    "states": ["active", "paused", "blocked", "complete"]
+  },
   "swarm_mentions": 93,
   "swarm_notes": [
     "KIMI_CODE_AGENT_SWARM_MAX_CONCURRENCY` to a positive integer to cap how many subagents run at the same time during that ramp, or leave it unset for no cap. If it is set to a value that is not a positive integer, the AgentSwarm call fails fast.",
@@ -139,6 +153,11 @@
     "docs/guide/use-moonpalace.md",
     "docs/guide/claude-code-kimi.md",
     "docs/guide/codex-kimi.md",
-    "docs/openapi.json"
+    "docs/openapi.json",
+    "docs/api/batch-create.md",
+    "docs/api/estimate.md",
+    "docs/guide/kimi-k2-7-code-quickstart.md",
+    "docs/guide/kimi-k2-6-quickstart.md",
+    "docs/guide/open-code.md"
   ]
 }

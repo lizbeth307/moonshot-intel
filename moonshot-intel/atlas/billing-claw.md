@@ -65,6 +65,10 @@ Authorization: Bearer <platform_api_key>
 
 Pay-as-you-go; no Swarm/Claw. K3 pricing: see [`../platform-docs/pricing-chat-k3.md`](../platform-docs/pricing-chat-k3.md).
 
+**Also on Platform (not Code API):** batch jobs, file upload/extract, token estimate, balance check. Rate limits tiered by cumulative recharge ($1 min to start). See [`platform-api-inventory.json`](platform-api-inventory.json).
+
+**K2.7 Code on Platform:** `kimi-k2.7-code` and `kimi-k2.7-code-highspeed` (256K, thinking-only) — alternative to Code membership for coding inference only.
+
 ## Feedback endpoint (telemetry)
 
 From `managed-feedback.ts`:
