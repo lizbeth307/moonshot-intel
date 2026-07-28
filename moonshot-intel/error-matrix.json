@@ -527,11 +527,29 @@
     "next_script": "moonshot-intel/post-access-probe.ps1"
   },
   "hypotheses_next": [
-    {"id": "H-G", "priority": "P1", "action": "Parse llms-full-github.txt for error-reference + Claw protobuf refs"},
-    {"id": "H-F", "priority": "P2", "action": "CT/DNS when crt.sh available; retry msh.team"},
+    {"id": "H-G", "priority": "DONE", "action": "Parse llms-full-github.txt → atlas/docs-index.json (52 pages, 59 env vars)"},
+    {"id": "H-F", "priority": "DONE", "action": "CT/DNS → atlas/infra-dns.json; moonshot.ai CRT ok; msh.team timeout"},
     {"id": "H-CLI", "priority": "DONE", "action": "OAuth→provider wiring fixed (config.toml + BOM-free credentials)"},
-    {"id": "H-VIVACE", "priority": "P0", "action": "After Vivace: probe GET /usages for real quota JSON + AgentSwarm + /swarm"},
-    {"id": "H-PLATFORM", "priority": "P1", "action": "If user adds Platform API key: test api.moonshot.ai/v1 + CF AI Gateway proxy"},
+    {"id": "H-VIVACE", "priority": "P0", "action": "After Vivace: run post-access-probe.ps1 → atlas/vivace-capabilities.md"},
+    {"id": "H-PLATFORM", "priority": "P1", "action": "If user adds Platform API key: run platform-probe.ps1"},
     {"id": "H-C", "priority": "P3", "action": "tool SSRF map — blocked until Vivace"}
-  ]
+  ],
+  "atlas": {
+    "compiled": "2026-07-28",
+    "plan": "moonshot_intel_deepening",
+    "deliverables": {
+      "architecture": "atlas/architecture.md",
+      "protobuf": "atlas/protobuf.md",
+      "billing_claw": "atlas/billing-claw.md",
+      "error_catalog": "atlas/error-catalog.json",
+      "docs_index": "atlas/docs-index.json",
+      "infra_dns": "atlas/infra-dns.json",
+      "msh_team_notes": "atlas/msh-team-notes.md",
+      "marketplace": "atlas/marketplace.json",
+      "monorepo_packages": "atlas/monorepo-packages.md",
+      "platform_probe": "platform-probe.ps1",
+      "vivace_capabilities": "atlas/vivace-capabilities.md",
+      "decision_matrix": "atlas/decision-matrix.md"
+    }
+  }
 }
