@@ -1,0 +1,79 @@
+{
+  "source": "platform.kimi.ai/docs/openapi.json + llms.txt",
+  "compiled": "2026-07-28",
+  "base_urls": {
+    "global": "https://api.moonshot.ai/v1",
+    "china": "https://api.moonshot.cn/v1",
+    "singapore": "https://api-sg.moonshot.ai/v1"
+  },
+  "paths": [
+    {
+      "path": "/v1/chat/completions",
+      "methods": ["POST"],
+      "notes": "K3, K2.7 Code, K2.6; tool calling, partial mode"
+    },
+    {
+      "path": "/v1/models",
+      "methods": ["GET"],
+      "notes": "think_efforts, supports_thinking_type, context_length"
+    },
+    {
+      "path": "/v1/users/me/balance",
+      "methods": ["GET"],
+      "notes": "available, voucher, cash balances"
+    },
+    {
+      "path": "/v1/batches",
+      "methods": ["POST", "GET"],
+      "notes": "JSONL batch jobs; max 100MB; 1000 files/org"
+    },
+    {
+      "path": "/v1/batches/{batch_id}",
+      "methods": ["GET"]
+    },
+    {
+      "path": "/v1/batches/{batch_id}/cancel",
+      "methods": ["POST"]
+    },
+    {
+      "path": "/v1/files",
+      "methods": ["POST", "GET"],
+      "notes": "purpose: batch, file-extract, image, video"
+    },
+    {
+      "path": "/v1/files/{file_id}",
+      "methods": ["GET", "DELETE"]
+    },
+    {
+      "path": "/v1/files/{file_id}/content",
+      "methods": ["GET"],
+      "notes": "Extracted text for file-extract purpose"
+    },
+    {
+      "path": "/v1/tokenizers/estimate-token-count",
+      "methods": ["POST"],
+      "notes": "Same message shape as chat/completions"
+    }
+  ],
+  "rate_limit_tiers": [
+    { "tier": "Tier0", "recharge_usd": 1, "concurrency": 1, "rpm": 3, "tpm": 500000, "tpd": 1500000 },
+    { "tier": "Tier1", "recharge_usd": 10, "concurrency": 50, "rpm": 200, "tpm": 2000000, "tpd": "unlimited" },
+    { "tier": "Tier2", "recharge_usd": 20, "concurrency": 100, "rpm": 500, "tpm": 3000000, "tpd": "unlimited" },
+    { "tier": "Tier3", "recharge_usd": 100, "concurrency": 200, "rpm": 5000, "tpm": 3000000, "tpd": "unlimited" },
+    { "tier": "Tier4", "recharge_usd": 1000, "concurrency": 400, "rpm": 5000, "tpm": 4000000, "tpd": "unlimited" },
+    { "tier": "Tier5", "recharge_usd": 3000, "concurrency": 1000, "rpm": 10000, "tpm": 5000000, "tpd": "unlimited" }
+  ],
+  "models_documented": [
+    "kimi-k3",
+    "kimi-k2.7-code",
+    "kimi-k2.7-code-highspeed",
+    "kimi-k2.6",
+    "kimi-k2.5"
+  ],
+  "not_on_code_api": [
+    "/v1/batches",
+    "/v1/files",
+    "/v1/tokenizers/estimate-token-count",
+    "/v1/users/me/balance"
+  ]
+}

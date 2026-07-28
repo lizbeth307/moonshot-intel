@@ -1,0 +1,393 @@
+{
+  "source": "/workspace/moonshot-intel/wayback/error-ref-20260727.html",
+  "count": 33,
+  "errors": [
+    {
+      "id": "model-calls",
+      "title": "Model calls",
+      "http": "401",
+      "samples": [
+        "error, status code: 401, message: The API Key appears to be invalid or may have expired. Please verify your credentials and try again.",
+        "error, status code: 401, message: Invalid Authentication"
+      ]
+    },
+    {
+      "id": "tool-calls",
+      "title": "Tool calls",
+      "http": "401",
+      "samples": [
+        "error, status code: 401, message: The API Key appears to be invalid or may have expired. Please verify your credentials and try again.",
+        "error, status code: 401, message: Invalid Authentication",
+        "error, status code: 402, message: We&#39;re unable to verify your membership benefits at this time. Please ensure your membership is active.",
+        "error, status code: 401, message: Your current subscription does not have access to k3. Upgrade to an Moderato plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error"
+      ]
+    },
+    {
+      "id": "invalid-api-key",
+      "title": "Invalid API Key",
+      "http": "402",
+      "samples": [
+        "error, status code: 401, message: The API Key appears to be invalid or may have expired. Please verify your credentials and try again.",
+        "error, status code: 401, message: Invalid Authentication",
+        "error, status code: 402, message: We&#39;re unable to verify your membership benefits at this time. Please ensure your membership is active.",
+        "error, status code: 401, message: Your current subscription does not have access to k3. Upgrade to an Moderato plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your current plan supports only kimi-k3 up to 256K context. 1M context is available on higher-tier plans. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error"
+      ]
+    },
+    {
+      "id": "invalid-authentication",
+      "title": "Invalid Authentication",
+      "http": "402",
+      "samples": [
+        "error, status code: 401, message: Invalid Authentication",
+        "error, status code: 402, message: We&#39;re unable to verify your membership benefits at this time. Please ensure your membership is active.",
+        "error, status code: 401, message: Your current subscription does not have access to k3. Upgrade to an Moderato plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your current plan supports only kimi-k3 up to 256K context. 1M context is available on higher-tier plans. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your model id does not exist, recognized as other:&lt;model-id&gt;. Please set model id as `&lt;correct-model-id&gt;`."
+      ]
+    },
+    {
+      "id": "unable-to-verify-membership",
+      "title": "Unable to Verify Membership",
+      "http": "401",
+      "samples": [
+        "error, status code: 402, message: We&#39;re unable to verify your membership benefits at this time. Please ensure your membership is active.",
+        "error, status code: 401, message: Your current subscription does not have access to k3. Upgrade to an Moderato plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your current plan supports only kimi-k3 up to 256K context. 1M context is available on higher-tier plans. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your model id does not exist, recognized as other:&lt;model-id&gt;. Please set model id as `&lt;correct-model-id&gt;`.",
+        "error, status code: 401, message: Your current subscription does not have access to kimi-for-coding-highspeed. Upgrade to an Allegretto plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_highspeed_error"
+      ]
+    },
+    {
+      "id": "no-k3-access",
+      "title": "No K3 Access",
+      "http": null,
+      "samples": [
+        "error, status code: 401, message: Your current subscription does not have access to k3. Upgrade to an Moderato plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your current plan supports only kimi-k3 up to 256K context. 1M context is available on higher-tier plans. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your model id does not exist, recognized as other:&lt;model-id&gt;. Please set model id as `&lt;correct-model-id&gt;`.",
+        "error, status code: 401, message: Your current subscription does not have access to kimi-for-coding-highspeed. Upgrade to an Allegretto plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_highspeed_error",
+        "error, status code: 403, message: You&#39;ve reached your usage limit for this billing cycle. Your quota will be refreshed in the next cycle."
+      ]
+    },
+    {
+      "id": "no-1m-access",
+      "title": "No 1M Access",
+      "http": "429",
+      "samples": [
+        "error, status code: 401, message: Your current plan supports only kimi-k3 up to 256K context. 1M context is available on higher-tier plans. Upgrade: https://www.kimi.com/membership/pricing?from=server_k3_error",
+        "error, status code: 401, message: Your model id does not exist, recognized as other:&lt;model-id&gt;. Please set model id as `&lt;correct-model-id&gt;`.",
+        "error, status code: 401, message: Your current subscription does not have access to kimi-for-coding-highspeed. Upgrade to an Allegretto plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_highspeed_error",
+        "error, status code: 403, message: You&#39;ve reached your usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 403, message: Access terminated."
+      ]
+    },
+    {
+      "id": "model-id-does-not-exist",
+      "title": "Model ID Does Not Exist",
+      "http": "429",
+      "samples": [
+        "error, status code: 401, message: Your model id does not exist, recognized as other:&lt;model-id&gt;. Please set model id as `&lt;correct-model-id&gt;`.",
+        "error, status code: 401, message: Your current subscription does not have access to kimi-for-coding-highspeed. Upgrade to an Allegretto plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_highspeed_error",
+        "error, status code: 403, message: You&#39;ve reached your usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 403, message: Access terminated.",
+        "error, status code: 429, message: The engine is currently overloaded, please try again later"
+      ]
+    },
+    {
+      "id": "highspeed-model-access-denied",
+      "title": "HighSpeed Model Access Denied",
+      "http": "429",
+      "samples": [
+        "error, status code: 401, message: Your current subscription does not have access to kimi-for-coding-highspeed. Upgrade to an Allegretto plan or above. Upgrade: https://www.kimi.com/membership/pricing?from=server_highspeed_error",
+        "error, status code: 403, message: You&#39;ve reached your usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 403, message: Access terminated.",
+        "error, status code: 429, message: The engine is currently overloaded, please try again later",
+        "error, status code: 429, message: We&#39;re receiving too many requests at the moment. Please wait a moment and try again."
+      ]
+    },
+    {
+      "id": "billing-cycle-quota-exhausted",
+      "title": "Billing Cycle Quota Exhausted",
+      "http": "429",
+      "samples": [
+        "error, status code: 403, message: You&#39;ve reached your usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 403, message: Access terminated.",
+        "error, status code: 429, message: The engine is currently overloaded, please try again later",
+        "error, status code: 429, message: We&#39;re receiving too many requests at the moment. Please wait a moment and try again.",
+        "error, status code: 429, message: You&#39;ve reached your usage limit for this period. Your quota will be refreshed in the next period."
+      ]
+    },
+    {
+      "id": "account-access-terminated",
+      "title": "Account Access Terminated",
+      "http": "429",
+      "samples": [
+        "error, status code: 403, message: Access terminated.",
+        "error, status code: 429, message: The engine is currently overloaded, please try again later",
+        "error, status code: 429, message: We&#39;re receiving too many requests at the moment. Please wait a moment and try again.",
+        "error, status code: 429, message: You&#39;ve reached your usage limit for this period. Your quota will be refreshed in the next period.",
+        "error, status code: 429, message: You&#39;ve reached kimi monthly usage limit for this billing cycle. Your quota will be refreshed in the next cycle."
+      ]
+    },
+    {
+      "id": "inference-engine-overloaded",
+      "title": "Inference Engine Overloaded",
+      "http": "400",
+      "samples": [
+        "error, status code: 429, message: The engine is currently overloaded, please try again later",
+        "error, status code: 429, message: We&#39;re receiving too many requests at the moment. Please wait a moment and try again.",
+        "error, status code: 429, message: You&#39;ve reached your usage limit for this period. Your quota will be refreshed in the next period.",
+        "error, status code: 429, message: You&#39;ve reached kimi monthly usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 400, message: total message size 5943865 exceeds limit 2097152"
+      ]
+    },
+    {
+      "id": "too-many-concurrent-requests",
+      "title": "Too Many Concurrent Requests",
+      "http": "400",
+      "samples": [
+        "error, status code: 429, message: We&#39;re receiving too many requests at the moment. Please wait a moment and try again.",
+        "error, status code: 429, message: You&#39;ve reached your usage limit for this period. Your quota will be refreshed in the next period.",
+        "error, status code: 429, message: You&#39;ve reached kimi monthly usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 400, message: total message size 5943865 exceeds limit 2097152",
+        "error, status code: 400, message: Invalid request: Your request exceeded model token limit: 262144 (requested: 558009)"
+      ]
+    },
+    {
+      "id": "_5-hour-rolling-quota-reached",
+      "title": "5-Hour Rolling Quota Reached",
+      "http": "400",
+      "samples": [
+        "error, status code: 429, message: You&#39;ve reached your usage limit for this period. Your quota will be refreshed in the next period.",
+        "error, status code: 429, message: You&#39;ve reached kimi monthly usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 400, message: total message size 5943865 exceeds limit 2097152",
+        "error, status code: 400, message: Invalid request: Your request exceeded model token limit: 262144 (requested: 558009)",
+        "error, status code: 400, message: thinking is enabled but reasoning_content is missing in assistant tool call message at index 2"
+      ]
+    },
+    {
+      "id": "monthly-kimi-quota-exhausted",
+      "title": "Monthly Kimi Quota Exhausted",
+      "http": "400",
+      "samples": [
+        "error, status code: 429, message: You&#39;ve reached kimi monthly usage limit for this billing cycle. Your quota will be refreshed in the next cycle.",
+        "error, status code: 400, message: total message size 5943865 exceeds limit 2097152",
+        "error, status code: 400, message: Invalid request: Your request exceeded model token limit: 262144 (requested: 558009)",
+        "error, status code: 400, message: thinking is enabled but reasoning_content is missing in assistant tool call message at index 2",
+        "error, status code: 400, message: Invalid request: unsupported image url: C:\\Users\\pc\\...\\screenshot.jpg"
+      ]
+    },
+    {
+      "id": "message-body-exceeds-context-limit",
+      "title": "Message Body Exceeds Context Limit",
+      "http": "404",
+      "samples": [
+        "error, status code: 400, message: total message size 5943865 exceeds limit 2097152",
+        "error, status code: 400, message: Invalid request: Your request exceeded model token limit: 262144 (requested: 558009)",
+        "error, status code: 400, message: thinking is enabled but reasoning_content is missing in assistant tool call message at index 2",
+        "error, status code: 400, message: Invalid request: unsupported image url: C:\\Users\\pc\\...\\screenshot.jpg",
+        "error, status code: 400, message: function name unnamed_function is duplicated"
+      ]
+    },
+    {
+      "id": "token-limit-exceeded",
+      "title": "Token Limit Exceeded",
+      "http": "404",
+      "samples": [
+        "error, status code: 400, message: Invalid request: Your request exceeded model token limit: 262144 (requested: 558009)",
+        "error, status code: 400, message: thinking is enabled but reasoning_content is missing in assistant tool call message at index 2",
+        "error, status code: 400, message: Invalid request: unsupported image url: C:\\Users\\pc\\...\\screenshot.jpg",
+        "error, status code: 400, message: function name unnamed_function is duplicated",
+        "error, status code: 400, message: The request was rejected because it was considered high risk"
+      ]
+    },
+    {
+      "id": "missing-reasoning-content-field",
+      "title": "Missing Reasoning Content Field",
+      "http": "404",
+      "samples": [
+        "error, status code: 400, message: thinking is enabled but reasoning_content is missing in assistant tool call message at index 2",
+        "error, status code: 400, message: Invalid request: unsupported image url: C:\\Users\\pc\\...\\screenshot.jpg",
+        "error, status code: 400, message: function name unnamed_function is duplicated",
+        "error, status code: 400, message: The request was rejected because it was considered high risk",
+        "error, status code: 404, message: Not found the model kimi-for-coding or Permission denied"
+      ]
+    },
+    {
+      "id": "unsupported-image-url",
+      "title": "Unsupported Image URL",
+      "http": "404",
+      "samples": [
+        "error, status code: 400, message: Invalid request: unsupported image url: C:\\Users\\pc\\...\\screenshot.jpg",
+        "error, status code: 400, message: function name unnamed_function is duplicated",
+        "error, status code: 400, message: The request was rejected because it was considered high risk",
+        "error, status code: 404, message: Not found the model kimi-for-coding or Permission denied",
+        "method not found"
+      ]
+    },
+    {
+      "id": "duplicate-tool-name",
+      "title": "Duplicate Tool Name",
+      "http": "404",
+      "samples": [
+        "error, status code: 400, message: function name unnamed_function is duplicated",
+        "error, status code: 400, message: The request was rejected because it was considered high risk",
+        "error, status code: 404, message: Not found the model kimi-for-coding or Permission denied",
+        "method not found",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;KIMI_CLAW_ID&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]"
+      ]
+    },
+    {
+      "id": "content-safety-rejection",
+      "title": "Content Safety Rejection",
+      "http": "404",
+      "samples": [
+        "error, status code: 400, message: The request was rejected because it was considered high risk",
+        "error, status code: 404, message: Not found the model kimi-for-coding or Permission denied",
+        "method not found",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;KIMI_CLAW_ID&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;openclaw-local&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]"
+      ]
+    },
+    {
+      "id": "model-not-found",
+      "title": "Model Not Found",
+      "http": "500",
+      "samples": [
+        "error, status code: 404, message: Not found the model kimi-for-coding or Permission denied",
+        "method not found",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;KIMI_CLAW_ID&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;openclaw-local&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]",
+        "internal: failed to connect to `user=kimi_chat_prod_rw database=membership_009`: ...: connection reset by peer"
+      ]
+    },
+    {
+      "id": "endpoint-not-found",
+      "title": "Endpoint Not Found",
+      "http": "500",
+      "samples": [
+        "method not found",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;KIMI_CLAW_ID&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;openclaw-local&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]",
+        "internal: failed to connect to `user=kimi_chat_prod_rw database=membership_009`: ...: connection reset by peer",
+        "internal: FATAL: terminating connection due to administrator command (SQLSTATE 57P03)"
+      ]
+    },
+    {
+      "id": "invalid-bot-id-format",
+      "title": "Invalid bot_id Format",
+      "http": "499",
+      "samples": [
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;KIMI_CLAW_ID&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]",
+        "invalid_argument: field kimi.billing.v1.ClawExtension.bot_id: value &quot;openclaw-local&quot; (id_kind=uuid_v4): value does not match id_kinds: [uuid_v4]",
+        "internal: failed to connect to `user=kimi_chat_prod_rw database=membership_009`: ...: connection reset by peer",
+        "internal: FATAL: terminating connection due to administrator command (SQLSTATE 57P03)",
+        "internal: conn closed"
+      ]
+    },
+    {
+      "id": "database-connection-failed",
+      "title": "Database Connection Failed",
+      "http": "499",
+      "samples": [
+        "internal: failed to connect to `user=kimi_chat_prod_rw database=membership_009`: ...: connection reset by peer",
+        "internal: FATAL: terminating connection due to administrator command (SQLSTATE 57P03)",
+        "internal: conn closed",
+        "internal: driver: bad connection",
+        "internal: read tcp ...: i/o timeout"
+      ]
+    },
+    {
+      "id": "internal-connection-error",
+      "title": "Internal Connection Error",
+      "http": "499",
+      "samples": [
+        "internal: conn closed",
+        "internal: driver: bad connection",
+        "internal: read tcp ...: i/o timeout",
+        "internal: unexpected EOF",
+        "internal: failed to evaluate rate limit script: read tcp ...: i/o timeout"
+      ]
+    },
+    {
+      "id": "downstream-service-unavailable",
+      "title": "Downstream Service Unavailable",
+      "http": "499",
+      "samples": [
+        "unavailable: 503 Service Unavailable",
+        "unavailable: 504 Gateway Timeout",
+        "unavailable: 502 Bad Gateway",
+        "unauthenticated: not_found: цЬкцЙ╛хИ░шпеш┤жхП╖я╝Мшп╖чбошодцШпхРжц│ихЖМ",
+        "unauthenticated: failed_precondition: хЫаш┐ЭхПНчФицИ╖хНПшооя╝Мшпеш┤жхП╖х╖▓швлчжБчФиуАВ"
+      ]
+    },
+    {
+      "id": "account-status-abnormal",
+      "title": "Account Status Abnormal",
+      "http": "499",
+      "samples": [
+        "unauthenticated: not_found: цЬкцЙ╛хИ░шпеш┤жхП╖я╝Мшп╖чбошодцШпхРжц│ихЖМ",
+        "unauthenticated: failed_precondition: хЫаш┐ЭхПНчФицИ╖хНПшооя╝Мшпеш┤жхП╖х╖▓швлчжБчФиуАВ",
+        "unauthenticated: failed_precondition: хЫаш┐ЭхПНчФицИ╖хНПшооя╝Мшпеш┤жхП╖х╖▓швлцЪВцЧ╢чжБчФиуАВ",
+        "unauthenticated: failed_precondition: хЫаш┐ЭхПНчФицИ╖хНПшооя╝Мшпеш┤жхП╖х╖▓швлчжБшиАуАВ",
+        "error sending &#39;CallDataSourceTool&#39; request: Post &quot;http://...&quot;: context canceled"
+      ]
+    },
+    {
+      "id": "request-canceled",
+      "title": "Request Canceled",
+      "http": "499",
+      "samples": [
+        "error sending &#39;CallDataSourceTool&#39; request: Post &quot;http://...&quot;: context canceled",
+        "canceled: context canceled",
+        "url2text:v2:fresh-request timeout",
+        "url-to-text request failed: 30001 invalid html",
+        "url-to-text request failed: 30041 check url failed, client error (4xx)"
+      ]
+    },
+    {
+      "id": "web-page-read-failed",
+      "title": "Web Page Read Failed",
+      "http": "500",
+      "samples": [
+        "url2text:v2:fresh-request timeout",
+        "url-to-text request failed: 30001 invalid html",
+        "url-to-text request failed: 30041 check url failed, client error (4xx)",
+        "url-to-text request failed: 30043 check url failed, server error (5xx)",
+        "url-to-text request failed: 403 verify page"
+      ]
+    },
+    {
+      "id": "image-moderation-failed",
+      "title": "Image Moderation Failed",
+      "http": "500",
+      "samples": [
+        "image_url:moderation request error: щЭЮц│Хш╛УхЕе",
+        "image_url:Post &quot;https://api.msh.team/v1/moderations&quot;: context deadline exceeded",
+        "(security_risk) We consider the current URL poses a security risk and are unable to provide fetch service at this time.",
+        "(invalid_url) The provided URL is invalid: parse &quot;https://the repo for the contents of the path&quot;: invalid character &quot; &quot; in host name",
+        "(invalid_url) The provided URL is invalid: missing scheme"
+      ]
+    },
+    {
+      "id": "url-security-risk-blocked",
+      "title": "URL Security Risk Blocked",
+      "http": "403",
+      "samples": [
+        "(security_risk) We consider the current URL poses a security risk and are unable to provide fetch service at this time.",
+        "(invalid_url) The provided URL is invalid: parse &quot;https://the repo for the contents of the path&quot;: invalid character &quot; &quot; in host name",
+        "(invalid_url) The provided URL is invalid: missing scheme"
+      ]
+    },
+    {
+      "id": "invalid-url-format",
+      "title": "Invalid URL Format",
+      "http": "400",
+      "samples": [
+        "(invalid_url) The provided URL is invalid: parse &quot;https://the repo for the contents of the path&quot;: invalid character &quot; &quot; in host name",
+        "(invalid_url) The provided URL is invalid: missing scheme"
+      ]
+    }
+  ]
+}

@@ -527,11 +527,73 @@
     "next_script": "moonshot-intel/post-access-probe.ps1"
   },
   "hypotheses_next": [
-    {"id": "H-G", "priority": "P1", "action": "Parse llms-full-github.txt for error-reference + Claw protobuf refs"},
-    {"id": "H-F", "priority": "P2", "action": "CT/DNS when crt.sh available; retry msh.team"},
+    {"id": "H-G", "priority": "DONE", "action": "Parse llms-full-github.txt → atlas/docs-index.json (52 pages, 59 env vars)"},
+    {"id": "H-F", "priority": "DONE", "action": "CT/DNS → atlas/infra-dns.json; moonshot.ai CRT ok; msh.team timeout"},
     {"id": "H-CLI", "priority": "DONE", "action": "OAuth→provider wiring fixed (config.toml + BOM-free credentials)"},
-    {"id": "H-VIVACE", "priority": "P0", "action": "After Vivace: probe GET /usages for real quota JSON + AgentSwarm + /swarm"},
-    {"id": "H-PLATFORM", "priority": "P1", "action": "If user adds Platform API key: test api.moonshot.ai/v1 + CF AI Gateway proxy"},
+    {"id": "H-VIVACE", "priority": "P0", "action": "After Vivace: run post-access-probe.ps1 → atlas/vivace-capabilities.md"},
+    {"id": "H-PLATFORM", "priority": "P1", "action": "If user adds Platform API key: run platform-probe.ps1"},
     {"id": "H-C", "priority": "P3", "action": "tool SSRF map — blocked until Vivace"}
+  ],
+  "atlas": {
+    "compiled": "2026-07-28",
+    "plan": "moonshot_intel_deepening",
+    "deliverables": {
+      "architecture": "atlas/architecture.md",
+      "protobuf": "atlas/protobuf.md",
+      "billing_claw": "atlas/billing-claw.md",
+      "error_catalog": "atlas/error-catalog.json",
+      "docs_index": "atlas/docs-index.json",
+      "infra_dns": "atlas/infra-dns.json",
+      "msh_team_notes": "atlas/msh-team-notes.md",
+      "marketplace": "atlas/marketplace.json",
+      "monorepo_packages": "atlas/monorepo-packages.md",
+      "platform_probe": "platform-probe.ps1",
+      "vivace_capabilities": "atlas/vivace-capabilities.md",
+      "decision_matrix": "atlas/decision-matrix.md",
+      "findings_deepening_b": "atlas/findings-deepening-b.md",
+      "platform_api_inventory": "atlas/platform-api-inventory.json"
+    }
+  },
+  "deepening_b_2026_07_28": [
+    {
+      "id": "device_oauth_live",
+      "evidence": "POST auth.kimi.com/api/oauth/device_authorization → 200 with verification_uri=https://www.kimi.com/code/authorize_device, expires_in=1800, interval=5",
+      "conclusion": "Official headless OAuth path; user approves at kimi.com/code/authorize_device"
+    },
+    {
+      "id": "dual_protocol_models",
+      "evidence": "managed-kimi-code.ts: protocol kimi|anthropic; anthropic → betaApi /v1/messages?beta=true on Code gateway",
+      "conclusion": "Same membership gate for OpenAI and Anthropic protocol models on Code API"
+    },
+    {
+      "id": "feedback_upload_multipart",
+      "evidence": "managed-feedback-upload.ts: /feedback/upload_url + /feedback/upload_complete presigned multipart",
+      "conclusion": "Feedback pipeline supports log/codebase attachment uploads after feedback_id"
+    },
+    {
+      "id": "goal_mode_ga",
+      "evidence": "llms-full changelog: goals/background-questions/sub-skill no longer need experimental opt-in; GOAL.md state machine active|paused|blocked|complete",
+      "conclusion": "Goal mode is GA in TUI/web; kimi -p exit codes 0=complete 3=blocked 6=paused"
+    },
+    {
+      "id": "platform_api_full_inventory",
+      "evidence": "platform openapi: batches, files, estimate-token-count, balance; llms.txt K2.6/K2.7 Code quickstarts",
+      "conclusion": "Platform has 10 REST paths Code API lacks; K2.7 Code pay-as-you-go without Vivace"
+    },
+    {
+      "id": "platform_rate_tiers",
+      "evidence": "docs-pricing-limits.md: Tier0 $1 min recharge 3RPM → Tier5 $3K 10KRPM; $5 cumulative → $5 voucher",
+      "conclusion": "Platform rate limits tied to cumulative recharge not flat subscription"
+    },
+    {
+      "id": "api_sg_region",
+      "evidence": "api-sg.moonshot.ai resolves; GET /v1/models → 401 without key",
+      "conclusion": "Singapore regional Platform API mirror exists"
+    },
+    {
+      "id": "moonshot_provider_k27",
+      "evidence": "@openclaw/moonshot-provider@2026.7.1: kimi-k2.7-code thinking stream hooks, media understanding, web search providers",
+      "conclusion": "Platform OpenClaw path richer than kimi-provider Coding path"
+    }
   ]
 }

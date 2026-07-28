@@ -1,0 +1,74 @@
+{
+  "dns": {
+    "resolved": {
+      "api.kimi.com": "2606:4700::6812:14f6",
+      "auth.kimi.com": "2606:4700::6812:15f6",
+      "code.kimi.com": "103.143.17.156",
+      "open.kimi.com": "103.143.17.156",
+      "www.kimi.com": "2606:4700::6812:14f6",
+      "cdn.kimi.com": "98.96.229.19",
+      "chat.msh.team": "103.143.17.156",
+      "api.msh.team": "172.24.64.47",
+      "api-sg.moonshot.ai": "2606:4700::6812:14f6"
+    },
+    "nxdomain": [
+      "agent.kimi.com",
+      "swarm.kimi.com",
+      "claw.kimi.com",
+      "mcp.kimi.com",
+      "gateway.kimi.com",
+      "free.kimi.com",
+      "trial.kimi.com",
+      "sandbox.kimi.com",
+      "beta.kimi.com",
+      "inference.kimi.com"
+    ]
+  },
+  "crt_sh": {
+    "kimi.com": {
+      "count_sampled": 6,
+      "names": [
+        "*.kimi.com",
+        "api.kimi.com",
+        "auth.kimi.com",
+        "kimi.com",
+        "vapay.kimi.com",
+        "www.kimi.com"
+      ]
+    },
+    "msh.team": {
+      "error": "crt.sh timeout or empty response (2026-07-28 retry)"
+    },
+    "moonshot.ai": {
+      "count_sampled": 10,
+      "names": [
+        "*.moonshot.ai",
+        "api-sg.moonshot.ai",
+        "forum.moonshot.ai",
+        "mail.moonshot.ai",
+        "moonshot.ai",
+        "test-kimi.moonshot.ai",
+        "test-platform.moonshot.ai",
+        "www.moonshot.ai"
+      ]
+    }
+  },
+  "wayback_cdx_2026_07_28": {
+    "kimi.com/code/pricing": "503 Service Unavailable (archive.org)",
+    "kimi.com/code/docs/benefits.md": "timeout",
+    "platform.kimi.ai/docs/guide/product-plans.md": "[] (no snapshots in CDX sample)"
+  },
+  "http_probe_2026_07_28": {
+    "chat.msh.team": 503,
+    "code.kimi.com/marketplace.json": 302,
+    "open.kimi.com": 404
+  },
+  "edge_notes": {
+    "volcddos_ip": "103.143.17.156",
+    "vpc_api_msh": "172.24.64.47",
+    "cloudflare": [
+      "api.kimi.com",
+      "auth.kimi.com"
+    ]
+  }
+}
