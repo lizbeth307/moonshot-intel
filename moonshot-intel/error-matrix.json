@@ -1,0 +1,537 @@
+{
+  "meta": {
+    "source": "https://www.kimi.com/code/docs/en/kimi-code/error-reference.html",
+    "compiled": "2026-07-28",
+    "session": "638b9e",
+    "user_state": "oauth_ok_402_no_membership"
+  },
+  "components": [
+    {
+      "id": "postgres_membership",
+      "confidence": "HIGH",
+      "artifacts": [
+        "user=kimi_chat_prod_rw",
+        "database=membership_009",
+        "SQLSTATE 57P03",
+        "driver: bad connection",
+        "conn closed",
+        "unexpected EOF"
+      ],
+      "role": "entitlement / plan verification"
+    },
+    {
+      "id": "redis_rate_limit",
+      "confidence": "HIGH",
+      "artifacts": ["failed to evaluate rate limit script"],
+      "role": "5h rolling, concurrent, burst limits"
+    },
+    {
+      "id": "billing_protobuf_claw",
+      "confidence": "HIGH",
+      "artifacts": [
+        "kimi.billing.v1.ClawExtension.bot_id",
+        "id_kind=uuid_v4",
+        "KIMI_CLAW_ID",
+        "openclaw-local"
+      ],
+      "role": "Claw per-bot billing extension"
+    },
+    {
+      "id": "moderation_internal",
+      "confidence": "HIGH",
+      "artifacts": [
+        "https://api.msh.team/v1/moderations",
+        "172.24.64.47",
+        "非法输入"
+      ],
+      "role": "image/content moderation (VPC)"
+    },
+    {
+      "id": "fetch_pipeline",
+      "confidence": "HIGH",
+      "artifacts": [
+        "url2text:v2",
+        "url-to-text 30001/30041/30043",
+        "spider checkUrl",
+        "CallDataSourceTool",
+        "http:// internal posts"
+      ],
+      "role": "agent URL fetch tools"
+    },
+    {
+      "id": "grpc_gateway",
+      "confidence": "MEDIUM",
+      "artifacts": [
+        "invalid_argument",
+        "internal",
+        "unavailable",
+        "unauthenticated",
+        "failed_precondition",
+        "not_found",
+        "canceled"
+      ],
+      "role": "backend status taxonomy"
+    },
+    {
+      "id": "oauth_identity",
+      "confidence": "HIGH",
+      "artifacts": [
+        "auth.kimi.com",
+        "client_id 17e5f671-d194-4dfb-9706-5516cb48c098",
+        "scope kimi-code",
+        "ES256",
+        "device_id binding",
+        "no plan in JWT"
+      ],
+      "role": "AuthN only, not AuthZ"
+    }
+  ],
+  "gates": [
+    {
+      "name": "kimi_code_membership",
+      "endpoint": "https://api.kimi.com/coding/v1",
+      "auth": "oauth_jwt_or_code_api_key",
+      "blocked_response": "402 unable to verify membership benefits"
+    },
+    {
+      "name": "open_platform",
+      "endpoint": "https://api.moonshot.ai/v1",
+      "auth": "platform_api_key",
+      "billing": "prepaid_tokens"
+    },
+    {
+      "name": "self_host_weights",
+      "endpoint": "local_inference",
+      "auth": "none",
+      "requirement": "multi_node_gpu"
+    }
+  ],
+  "live_findings_intel_hunt_6_8": [
+    {
+      "id": "chat_msh_team_public",
+      "runId": "intel-hunt-6/7/8",
+      "evidence": "chat.msh.team→103.143.17.156 via volcddos.com; /api→200 EchoMind Stoplight OpenAPI 39 paths; server url=https://qianxun-dev.rcrai.com/api",
+      "conclusion": "Second public msh.team host; hosts misplaced EchoMind/Rcrai dev API spec (not Kimi Code gateway)"
+    },
+    {
+      "id": "platform_dual_error_format",
+      "runId": "intel-hunt-6",
+      "evidence": "/v1/models→OpenAI invalid_authentication_error; /v1/chat/completions GET→Chinese url.not_found code:5 scode:0x5",
+      "conclusion": "Platform gateway layers two error taxonomies on same host"
+    },
+    {
+      "id": "kimi_code_swarm_surface",
+      "runId": "intel-hunt-7",
+      "evidence": "llms-full.txt 623KB: AgentSwarm tool, KIMI_CODE_AGENT_SWARM_MAX_CONCURRENCY, /usage slash shows fuel pack balance",
+      "conclusion": "Swarm/usage are CLI features; REST quota at GET /usages (not /usage)"
+    },
+    {
+      "id": "dual_authz_gates",
+      "runId": "intel-hunt-10",
+      "evidence": "GET /models→402 invalid_request_error membership; GET /usages→403 permission_denied common.error.v1.ErrorDetail REASON_FEATURE_NO_PERMISSION",
+      "conclusion": "Membership check (402) and feature-permission check (403 protobuf) are separate AuthZ layers on Code API"
+    },
+    {
+      "id": "code_api_usages_endpoint",
+      "runId": "intel-hunt-10",
+      "evidence": "packages/oauth/src/managed-usage.ts: kimiCodeUsageUrl() => /usages (plural); proto TIME_UNIT_* enums; boosterWallet type BOOSTER; FIXED_POINT_CENTS=1_000_000",
+      "conclusion": "CLI /usage hits GET https://api.kimi.com/coding/v1/usages — not /usage (404). Payload documents weekly plan limit + rolling windows + fuel pack wallet"
+    },
+    {
+      "id": "code_api_feedback_endpoint",
+      "runId": "intel-hunt-10",
+      "evidence": "packages/oauth/src/managed-feedback.ts: POST {baseUrl}/feedback with session_id, model, kimi-code- version prefix",
+      "conclusion": "Second managed REST surface beyond chat/search/fetch"
+    },
+    {
+      "id": "kimi_code_monorepo",
+      "runId": "intel-hunt-6/7",
+      "evidence": "MoonshotAI/kimi-code @moonshot-ai/monorepo; packages: acp-adapter, oauth, agent-core, node-sdk...",
+      "conclusion": "Full stack open-sourced as monorepo; protobuf/billing likely in packages/oauth or agent-core"
+    },
+    {
+      "id": "protocol_package_not_billing",
+      "runId": "intel-hunt-11",
+      "evidence": "packages/protocol is TypeScript ACP daemon protocol (error-codes 40110-40911); no .proto or billing strings",
+      "conclusion": "Billing protobuf (kimi.billing.v1) is NOT in kimi-code monorepo protocol package — hunt APK/npm instead"
+    },
+    {
+      "id": "usages_protobuf_decoded",
+      "runId": "intel-hunt-11b",
+      "evidence": "403 ErrorDetail base64 decodes to field en-US + message 'You do not have permission to use this feature. Please subscribe to access.'",
+      "conclusion": "403 gate uses common.error.v1.ErrorDetail protobuf with localizedMessage; separate from 402 membership OpenAI-style error"
+    },
+    {
+      "id": "feedback_endpoint_gate",
+      "runId": "intel-hunt-11b",
+      "evidence": "POST /feedback with OAuth + valid SubmitFeedbackBody schema → HTTP 400 Invalid request Error (not 402/403)",
+      "conclusion": "Feedback endpoint exists and accepts auth but rejects payload/server-side validation without membership context"
+    },
+    {
+      "id": "cli_wiring_verified",
+      "runId": "intel-hunt-11b",
+      "evidence": "kimi -p 'say ok' → provider.api_error: 402 membership (not apiKey is required / login_required)",
+      "conclusion": "Local OAuth wiring fix confirmed stable; remaining blocker is server-side Vivace/membership only"
+    },
+    {
+      "id": "code_api_key_auth_path",
+      "runId": "intel-hunt-12",
+      "evidence": "fake sk-/kimi- Bearer keys → 401 'The API Key appears to be invalid or may have expired'; no-auth → 401 Invalid Authentication",
+      "conclusion": "Code API has distinct AuthN paths: OAuth JWT (→402) vs Coding Plan API key (→401 if invalid). Keys are NOT interchangeable with Platform sk- keys"
+    },
+    {
+      "id": "consumer_vs_code_oauth_split",
+      "runId": "intel-hunt-12b",
+      "evidence": "www.kimi.com/api/user → 401 auth.token.invalid with Code OAuth JWT; auth.kimi.com/api/oauth/userinfo → 401 ECDSA key type mismatch",
+      "conclusion": "kimi-code scope JWT is valid only for api.kimi.com/coding/v1 — not consumer kimi.com nor generic OAuth userinfo"
+    },
+    {
+      "id": "openclaw_provider_surface",
+      "runId": "intel-hunt-12b",
+      "evidence": "@openclaw/kimi-provider@2026.7.1 npm: 'Official OpenClaw provider plugin for Kimi Coding'; docs.openclaw.ai/providers/moonshot",
+      "conclusion": "Claw stack uses same Code API gateway; ClawExtension billing is server-side protobuf, client is OpenClaw plugin not kimi-code monorepo"
+    },
+    {
+      "id": "openclaw_vs_cli_base_url",
+      "runId": "intel-hunt-13b",
+      "evidence": "openclaw provider-catalog.js: KIMI_BASE_URL='https://api.kimi.com/coding/' (no v1); env KIMI_API_KEY/KIMICODE_API_KEY; default model kimi-for-coding",
+      "conclusion": "OpenClaw uses API-key auth to coding/ root; kimi CLI uses OAuth to coding/v1 — same backend, different client paths"
+    },
+    {
+      "id": "moonshot_vs_coding_split",
+      "runId": "intel-hunt-13",
+      "evidence": "docs.openclaw.ai meta: 'Configure Moonshot Kimi models vs Kimi Coding (separate providers + keys)'",
+      "conclusion": "Platform API (Moonshot models) and Kimi Coding (Code API) are intentionally separate products with separate keys"
+    },
+    {
+      "id": "cli_fix_run4",
+      "runId": "intel-hunt-13",
+      "evidence": "kimi -p test → is402=true, isApiKeyError=false (4th consecutive verification)",
+      "conclusion": "Local OAuth wiring fix is stable; reproduction 402 is expected server membership gate"
+    },
+    {
+      "id": "cli_402_from_models_gate",
+      "runId": "intel-hunt-14",
+      "evidence": "managed-kimi-code.ts refreshes via GET /models before inference; GET /models→402; raw POST /chat/completions→400 (validation layer)",
+      "conclusion": "CLI -p fails at /models membership check (402) before chat/completions is reached — explains 402 vs curl 400 divergence"
+    },
+    {
+      "id": "cli_fix_run5",
+      "runId": "intel-hunt-14",
+      "evidence": "kimi -p ok → is402=true, isApiKey=false (5th verification)",
+      "conclusion": "Local fix confirmed; no further local changes possible without Vivace membership"
+    },
+    {
+      "id": "final_closeout_verified",
+      "runId": "final-closeout",
+      "evidence": "H1: oauthBlock=true credHasBom=false; H2: refresh ok TTL=900s; H3: /models→402 /usages→403; H4: CLI errorClass=membership_gate is402=true isApiKey=false (6th run)",
+      "conclusion": "DEBUG SESSION CLOSED: local OAuth wiring fix proven; 402/403 is sole remaining blocker (Vivace/Coding Plan required)"
+    },
+    {
+      "id": "deep_hunt_chat_completions_402",
+      "runId": "deep-hunt-1",
+      "evidence": "Proper JSON body + OAuth: POST /chat/completions→402, POST /v1/messages→402 (not 400); coding/chat/completions→404",
+      "conclusion": "All inference paths hit same membership gate with valid requests; OpenClaw coding/ root path is 404 on chat/completions"
+    },
+    {
+      "id": "deep_hunt_openclaw_legacy_models",
+      "runId": "deep-hunt-2",
+      "evidence": "provider-catalog.js: KIMI_LEGACY_MODEL_IDS=[kimi-code,k2p5]; normalize maps to kimi-for-coding; baseUrl=https://api.kimi.com/coding/",
+      "conclusion": "OpenClaw aliases legacy model IDs; actual API calls still go through managed gateway with API key auth"
+    },
+    {
+      "id": "deep_hunt_auth_surface",
+      "runId": "deep-hunt-1",
+      "evidence": "auth.kimi.com/.well-known→404; /api/oauth/authorize exists (400 redirect_uri); /api/oauth/device/code→404; no OIDC discovery",
+      "conclusion": "OAuth is custom not standard OIDC; device flow endpoint not exposed at guessed path"
+    },
+    {
+      "id": "deep_hunt_chat_msh_team_503",
+      "runId": "deep-hunt-1",
+      "evidence": "chat.msh.team/→503; /api→200 EchoMind; /api/v1/chat exists; /v1/models→503",
+      "conclusion": "chat.msh.team partially degraded; not a Kimi Code bypass vector"
+    },
+    {
+      "id": "deep_hunt_live_hunt_6_retry",
+      "runId": "live-hunt-6-retry",
+      "evidence": "POST chat/search/fetch with file bodies + fresh token → all 402 membership (not 400)",
+      "conclusion": "Previous 400 errors were malformed curl; valid requests uniformly blocked at membership"
+    },
+    {
+      "id": "deep_hunt_kimi_dns_volcddos",
+      "runId": "deep-hunt-3",
+      "evidence": "code.kimi.com + platform.kimi.com → CNAME volcddos.com → 103.143.17.156 (same IP as chat.msh.team); api.kimi.com → Cloudflare CDN separately",
+      "conclusion": "Code/marketing hosts share DDoS-protected edge IP; api.kimi.com Code API gateway is separate Cloudflare infra"
+    },
+    {
+      "id": "deep_hunt_feedback_402",
+      "runId": "deep-hunt-3",
+      "evidence": "POST /feedback with valid SubmitFeedbackBody → 402 membership (not 400)",
+      "conclusion": "Feedback endpoint also behind membership gate — all managed REST surfaces gated uniformly"
+    },
+    {
+      "id": "platform_balance_endpoint",
+      "runId": "deep-hunt-3",
+      "evidence": "platform.kimi.ai/docs: GET https://api.moonshot.ai/v1/users/me/balance requires MOONSHOT_API_KEY; balance<=0 blocks inference",
+      "conclusion": "Platform billing is prepaid balance check separate from Code membership_009; no free tier documented"
+    },
+    {
+      "id": "kimi_cli_three_urls_official",
+      "runId": "deep-hunt-3",
+      "evidence": "MoonshotAI/kimi-cli platforms.py lists exactly: api.kimi.com/coding/v1, api.moonshot.ai/v1, api.moonshot.cn/v1",
+      "conclusion": "Official CLI supports only these three provider bases — no hidden fourth URL"
+    },
+    {
+      "id": "code_api_402_payment_required",
+      "runId": "deep-hunt-4",
+      "evidence": "GET /models 402 headers: HTTP/1.1 402 Payment Required, Server: cloudflare, X-Trace-Id present, CF-RAY edge LIS",
+      "conclusion": "Membership gate uses literal HTTP 402 Payment Required behind Cloudflare; X-Trace-Id available for support tickets"
+    },
+    {
+      "id": "oauth_client_id_confirmed",
+      "runId": "deep-hunt-4",
+      "evidence": "packages/oauth/src/constants.ts: clientId 17e5f671-d194-4dfb-9706-5516cb48c098, oauthHost auth.kimi.com; managed-kimi-code treats 401/402/403 as auth errors",
+      "conclusion": "Single official OAuth client for kimi-code scope; no alternate client_id in open source"
+    },
+    {
+      "id": "auth_introspection_absent",
+      "runId": "deep-hunt-4",
+      "evidence": "auth.kimi.com: /oauth/revoke, /introspect, /token/info, /userinfo → all 404",
+      "conclusion": "No public token introspection/revoke at guessed paths — custom OAuth only exposes /api/oauth/token"
+    },
+    {
+      "id": "wayback_error_ref_20260727",
+      "runId": "wayback-deep",
+      "evidence": "archive.org/web/20260727175558 error-reference.html — same ClawExtension bot_id uuid_v4, membership_009 SQLSTATE 57P03 leaks",
+      "conclusion": "Docs leaks stable since first archive (Jul 2026); no new bypass vectors in historical snapshot"
+    },
+    {
+      "id": "wayback_membership_evolution",
+      "runId": "wayback-deep",
+      "evidence": "membership/pricing Sep 2025: generic Kimi assistant meta; Jul 2026: K3 + Swarm + Goal in meta description",
+      "conclusion": "K3/Swarm marketing added between Sep 2025 and Jul 2026; pricing page SPA not in wayback for code/pricing"
+    },
+    {
+      "id": "wayback_platform_moonshot_cn_2023",
+      "runId": "wayback-deep",
+      "evidence": "platform.moonshot.cn archived Dec 2023–Mar 2024 (200); platform.kimi.ai/docs CDX timeout",
+      "conclusion": "Chinese platform API existed since 2023; current platform.kimi.ai docs too new for wayback index"
+    },
+    {
+      "id": "wayback_code_docs_jan2026",
+      "runId": "wayback-deep",
+      "evidence": "kimi.com/code/docs first archive 20260129; VP_HASH includes benefits.md, providers.md, env-vars.md, mcp.md",
+      "conclusion": "Kimi Code docs site launched ~Jan 2026; llms-full.txt and /code/pricing not yet archived"
+    },
+    {
+      "id": "cf_x_trace_id_kimi_edge",
+      "runId": "deep-hunt-4+wayback",
+      "evidence": "402/403 responses include X-Trace-Id + Server:cloudflare; CF Workers tracing uses similar OTel pattern",
+      "conclusion": "Kimi Code API edge is Cloudflare; trace IDs useful for support tickets not MCP observability (foreign zone)"
+    }
+  ],
+  "live_findings_2026_07_28": [
+    {
+      "id": "auth_matrix_code",
+      "runId": "live-hunt-4",
+      "evidence": "no auth→401 Invalid Authentication; fake sk→401 API Key invalid; OAuth JWT→402 membership",
+      "conclusion": "JWT passes AuthN, blocked at membership AuthZ (postgres membership_009)"
+    },
+    {
+      "id": "auth_matrix_platform",
+      "runId": "live-hunt-4",
+      "evidence": "no key→401 Incorrect API key; fake sk→401 Invalid Authentication; OAuth JWT→401 Invalid Authentication",
+      "conclusion": "Platform gate rejects Code OAuth entirely — separate credential universe"
+    },
+    {
+      "id": "oauth_refresh_format",
+      "runId": "live-hunt-4",
+      "evidence": "JSON body→unsupported_grant_type; form-urlencoded→200 + new access_token",
+      "conclusion": "Token refresh must use application/x-www-form-urlencoded"
+    },
+    {
+      "id": "msh_team_dns",
+      "runId": "live-hunt-3",
+      "evidence": "only api.msh.team→172.24.64.47; NS vip3/vip4.alidns.com; TXT Feishu/Lark + SPF feishu.cn",
+      "conclusion": "Internal VPC host confirmed; Moonshot corp stack uses Feishu (Lark)"
+    },
+    {
+      "id": "cli_oauth_disconnect",
+      "runId": "live-hunt-5 + post-fix-v2",
+      "evidence": "missing [providers.oauth] in config; credentials/kimi-code.json had UTF-8 BOM (239,187,191) breaking Node JSON.parse",
+      "conclusion": "Fix: add oauth ref to config.toml + rewrite credentials without BOM. CLI then returns 402 (membership), not apiKey/login_required"
+    },
+    {
+      "id": "platforms_three_urls",
+      "runId": "live-hunt-4",
+      "evidence": "platforms.py: api.kimi.com/coding/v1, api.moonshot.ai/v1, api.moonshot.cn/v1",
+      "conclusion": "Official CLI supports exactly three provider base URLs"
+    },
+    {
+      "id": "jwt_no_entitlement",
+      "runId": "live-hunt-4",
+      "evidence": "claims: user_id, device_id, scope=kimi-code, type=access — no plan/credits",
+      "conclusion": "Entitlement always server-side lookup, never in token"
+    }
+  ],
+  "full_sweep_2026_07_28": [
+    {
+      "id": "llms_full_github",
+      "runId": "full-sweep-1+2",
+      "evidence": "moonshotai.github.io/kimi-code/llms-full.txt → 613KB markdown dump (ACP, AgentSwarm, env-vars, providers). kimi.com/code/llms-full.txt → 212KB HTML SPA (not text)",
+      "conclusion": "Official full docs index for LLMs lives on GitHub Pages, not kimi.com SPA routes"
+    },
+    {
+      "id": "code_api_get_surface",
+      "runId": "full-sweep-1",
+      "evidence": "GET /models→402 membership; GET /usages→403 REASON_FEATURE_NO_PERMISSION; /health /version /status /openapi /agents /swarm /goals /mcp /ws /billing /membership → 404",
+      "conclusion": "Code API exposes only 2 authenticated GET routes; Swarm/Claw are CLI-local (AgentSwarm tool), not REST"
+    },
+    {
+      "id": "code_api_post_surface",
+      "runId": "full-sweep-2",
+      "evidence": "POST /chat/completions with UTF-8 JSON file + kimi-cli UA → 402 membership (not 400). POST /search /fetch /feedback /messages /embeddings → Invalid request Error (route exists, schema strict). POST /completions /moderations → 404",
+      "conclusion": "All inference POST routes pass AuthN then hit membership gate; Windows curl -d inline JSON unreliable"
+    },
+    {
+      "id": "auth_matrix_refined",
+      "runId": "full-sweep-1",
+      "evidence": "OAuth JWT→402 membership msg; sk-fake→401 'API Key invalid/expired'; Bearer empty→401 'Invalid Authentication'; no auth→401 'Invalid Authentication'; X-API-Key fake→401 API Key invalid",
+      "conclusion": "Code API distinguishes Bearer-JWT (membership) vs API-key format (401) vs missing auth (401)"
+    },
+    {
+      "id": "open_kimi_com",
+      "runId": "full-sweep-2",
+      "evidence": "open.kimi.com CNAME volcddos.com → 103.143.17.156 (same as code.kimi.com); GET / → 404 page not found",
+      "conclusion": "Reserved subdomain on Moonshot CDN edge; no public API yet"
+    },
+    {
+      "id": "legacy_installer_paths",
+      "runId": "full-sweep-1",
+      "evidence": "code.kimi.com/api/health and code.kimi.com/llms-full.txt return deprecated Python kimi-cli bash installer script; new install: curl -fsSL https://code.kimi.com/kimi-code/install.sh | bash",
+      "conclusion": "Legacy Python CLI fully deprecated; health endpoint is misconfigured catch-all"
+    },
+    {
+      "id": "platform_kimi_ai_live",
+      "runId": "full-sweep-1+2",
+      "evidence": "platform.kimi.ai/docs/guide/product-plans.md live; openapi.json 33KB; docs/api/chat 808KB. product-plans: 3 products — Open Platform (pay-as-you-go), Kimi Office (enterprise), Kimi Membership (includes Code benefits, separate from Platform API)",
+      "conclusion": "Official docs confirm Membership≠Platform; llms index at platform.kimi.ai/docs/llms.txt"
+    },
+    {
+      "id": "wayback_platform_kimi_ai",
+      "runId": "full-sweep-1",
+      "evidence": "CDX platform.kimi.ai/docs/* → 20 snapshots (308 redirects, May–Jul 2026); platform.kimi.ai/* wildcard → 0; code/pricing → 0; api.kimi.com → 0",
+      "conclusion": "platform.kimi.ai docs archived since May 2026; Code API and pricing never in Wayback"
+    },
+    {
+      "id": "npm_package_map",
+      "runId": "full-sweep-1",
+      "evidence": "@openclaw/kimi-provider@2026.7.1 exists; kimi-cli exists; @moonshot-ai/kimi-code exists; @kimi/code → 404",
+      "conclusion": "OpenClaw Kimi provider is separate npm package; official CLI distributed via install.sh not @kimi/code"
+    },
+    {
+      "id": "dns_subdomain_negative",
+      "runId": "full-sweep-1",
+      "evidence": "agent/swarm/claw/mcp/gateway/billing/membership/quota/usage/oauth/docs/static/ws/realtime.kimi.com → NXDOMAIN; auth.kimi.com + cdn.kimi.com → CNAME only",
+      "conclusion": "No dedicated Swarm/Claw/MCP public subdomains; features run through api.kimi.com/coding/v1 + CLI"
+    },
+    {
+      "id": "kimi_com_consumer_api",
+      "runId": "full-sweep-1",
+      "evidence": "/api/user→401 token expired (Chinese); /api/chat + /api/config→405 Method Not Allowed on GET; /api/membership /billing /plan /quota→Cannot GET",
+      "conclusion": "Consumer web API exists but is session-cookie based, rejects Code OAuth JWT"
+    },
+    {
+      "id": "managed_usage_schema_live",
+      "runId": "full-sweep-2",
+      "evidence": "GitHub packages/oauth/src/managed-usage.ts: GET /usages returns usage{used,limit,resetTime} + limits[] with TIME_UNIT_* + boosterWallet type BOOSTER (fuel pack); FIXED_POINT_CENTS=1_000_000",
+      "conclusion": "After Vivace: /usage CLI command maps to this JSON; Extra Usage = boosterWallet"
+    },
+    {
+      "id": "agentswarm_cli_only",
+      "runId": "full-sweep-2",
+      "evidence": "llms-full: AgentSwarm built-in tool max 128 subagents; /swarm slash command; KIMI_CODE_AGENT_SWARM_MAX_CONCURRENCY env; no REST /swarm endpoint",
+      "conclusion": "Swarm orchestration is entirely client-side via CLI v2 engine, not a separate API host"
+    },
+    {
+      "id": "auth_oidc_no_discovery",
+      "runId": "full-sweep-2",
+      "evidence": "auth.kimi.com/.well-known/openid-configuration → 404 nginx; /api/oauth/jwks → 22 bytes (404); OAuth only exposes /api/oauth/token (form-urlencoded refresh)",
+      "conclusion": "Custom OAuth stack, no public OIDC discovery document"
+    },
+    {
+      "id": "bypass_verdict_reconfirmed",
+      "runId": "full-sweep-1+2",
+      "evidence": "All 140+ probes: OAuth→402/403; Platform OAuth on Code→401; fake keys→401; alt hosts gateway/open→NXDOMAIN/404; CLI kimi -p→402",
+      "conclusion": "No new bypass vector found across Code API sweep, DNS, Wayback, GitHub docs, npm, platform.kimi.ai"
+    }
+  ],
+  "phase2_2026_07_28": [
+    {
+      "id": "cli_health_verified",
+      "runId": "phase-2",
+      "evidence": "kimi doctor → OK config.toml + tui.toml; kimi provider list → managed:kimi-code type=kimi models=4 source=oauth default=kimi-code/k3",
+      "conclusion": "OAuth wiring fully healthy; 402 is pure membership gate not config bug"
+    },
+    {
+      "id": "managed_models_four",
+      "runId": "phase-2",
+      "evidence": "config.toml models: k3 (1M ctx), k3-256k (256K), kimi-for-coding (K2.7 Code), kimi-for-coding-highspeed (K2.7 HighSpeed)",
+      "conclusion": "Vivace unlocks 4 Code API models including full K3 1M — not just kimi-for-coding"
+    },
+    {
+      "id": "jwt_claims_full",
+      "runId": "phase-2",
+      "evidence": "JWT: iss=kimi-auth, scope=kimi-code, type=access, client_id, user_id, device_id, token_id/jti, exp TTL=900s — no plan field",
+      "conclusion": "Membership lookup always server-side at request time"
+    },
+    {
+      "id": "trace_ids_cf_edge",
+      "runId": "phase-2",
+      "evidence": "/models 402 X-Trace-Id=c47fb9fa5cb002fd3c95173af55a8f01 CF-Ray=LIS; /usages 403 X-Trace-Id=dc3a0eef004425d3f6a49b5835b6666a",
+      "conclusion": "402 and 403 are separate backend checks; trace IDs usable for Moonshot support tickets"
+    },
+    {
+      "id": "platform_llms_index",
+      "runId": "phase-2",
+      "evidence": "platform.kimi.ai/docs/llms.txt → 9KB index saved; includes K3/K2.7 Code pricing, OpenClaw guide, Kimi Code CLI guide, MoonPalace debugger",
+      "conclusion": "Platform docs are live and separate from Code docs on moonshotai.github.io"
+    },
+    {
+      "id": "openclaw_provider_detail",
+      "runId": "phase-2",
+      "evidence": "@openclaw/kimi-provider@2026.7.1: baseUrl=https://api.kimi.com/coding/ (no v1), api=anthropic-messages, UA=claude-code/0.1.0, model=kimi-for-coding, legacy kimi-code/k2p5, auth=KIMI_API_KEY subscription key NOT OAuth, no ClawExtension client-side",
+      "conclusion": "OpenClaw uses Coding Plan API key on same gateway; ClawExtension bot_id is injected server-side only"
+    },
+    {
+      "id": "platform_alternative_path",
+      "runId": "phase-2",
+      "evidence": "platform docs: use-kimi-in-openclaw.md + kimi-code-cli.md + pricing/chat-k3.md — Platform API key gives K3 pay-as-you-go via kimi /login Platform option",
+      "conclusion": "Legal partial path: Platform key → K3 inference in CLI/OpenClaw, but NOT Swarm/Claw/Vivace stack"
+    }
+  ],
+  "final_verification_2026_07_28": {
+    "runId": "final-verify",
+    "verdict": "FIX_OK_MEMBERSHIP_BLOCKED",
+    "user_confirmed_reproductions": 3,
+    "status": "CLOSED",
+    "evidence": {
+      "oauth_block_in_config": true,
+      "credentials_bom": false,
+      "oauth_refresh_http200": true,
+      "api_models_http402_membership": true,
+      "cli_no_apikey_error": true,
+      "doctor_valid": true
+    },
+    "conclusion": "Original OAuth/apiKey bug is fixed. 402 is expected product gate until Vivace or Platform API key path.",
+    "next_script": "moonshot-intel/post-access-probe.ps1"
+  },
+  "hypotheses_next": [
+    {"id": "H-G", "priority": "P1", "action": "Parse llms-full-github.txt for error-reference + Claw protobuf refs"},
+    {"id": "H-F", "priority": "P2", "action": "CT/DNS when crt.sh available; retry msh.team"},
+    {"id": "H-CLI", "priority": "DONE", "action": "OAuth→provider wiring fixed (config.toml + BOM-free credentials)"},
+    {"id": "H-VIVACE", "priority": "P0", "action": "After Vivace: probe GET /usages for real quota JSON + AgentSwarm + /swarm"},
+    {"id": "H-PLATFORM", "priority": "P1", "action": "If user adds Platform API key: test api.moonshot.ai/v1 + CF AI Gateway proxy"},
+    {"id": "H-C", "priority": "P3", "action": "tool SSRF map — blocked until Vivace"}
+  ]
+}

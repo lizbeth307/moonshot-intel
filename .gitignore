@@ -1,0 +1,21 @@
+# Other projects in this folder (secrets, large trees)
+passive-gpu-factory/
+BioAGI/
+
+# Debug / session logs
+debug-*.log
+
+# Secrets
+.env
+.env.*
+*.pem
+credentials/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.cursor/
+
+# Large or generated (keep llms-full-github.txt — it's the doc dump)
+# moonshot-intel/llms-full.txt is HTML SPA junk — optional exclude
+moonshot-intel/llms-full.txt
