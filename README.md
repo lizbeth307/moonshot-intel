@@ -4,6 +4,12 @@ Research artifacts for Kimi / Moonshot AI ecosystem (Code API, Platform API, OAu
 
 See [`moonshot-intel/error-matrix.json`](moonshot-intel/error-matrix.json) for the master index.
 
+## Research notes
+
+- [`local-inference/k3-in-c-analysis.md`](moonshot-intel/local-inference/k3-in-c-analysis.md) --
+  running the full 2.78T Kimi K3 checkpoint on CPU via `kimi-k3-in-c`, reproduced build and
+  test results, and why local K3 on Android is storage-bound rather than compute-bound.
+
 ## Cursor Cloud Agent
 
 This repo is set up for **Build in Cloud**. Requirements:
